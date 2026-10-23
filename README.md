@@ -40,14 +40,28 @@ qmk compile -kb holykeebs/sweeq -km ediasv
 Flash both halves with the same `.uf2`:
 
 1. Unplug everything. Connect one half over USB, with TRRS disconnected.
-2. Enter the bootloader. Use any of these:
-   - double-tap the reset button;
-   - hold `SYM` (right outer thumb) and press `QK_BOOT` (left top-outer key);
-   - hold `Y` while plugging USB into the right half (bootmagic; this also clears EEPROM).
+2. Enter the bootloader. **Double-tap the reset button** works on either half.
+   Bootmagic also works. Hold the key while plugging in USB, and EEPROM is cleared too:
+   - **right half:** hold `Y`;
+   - **left half:** hold `T`. A half plugged in alone always thinks it is the
+     right half, so its keys use the right half's positions.
 3. Copy `holykeebs_sweeq_ediasv.uf2` onto the `RPI-RP2` drive. It ejects when done.
 4. Repeat for the other half.
 
 When you're done, connect TRRS first, then plug USB into the **right** half.
+
+Later updates: with TRRS connected and USB on the right, hold `SYM` (right outer
+thumb) and press `QK_BOOT` (left top-outer key). This reboots **only the right
+half** into the bootloader. Keymap-only changes just need the right half, because only
+the half on USB runs the keymap. After changing the board definition or updating
+QMK, flash **both** halves with the steps above so they stay compatible.
+
+Notes:
+- Don't hold `Q` while plugging in with TRRS connected. That triggers bootmagic
+  on the left half: it drops into the bootloader and looks dead until you replug.
+- Don't use the `SYM` layer's top-row corners with one half plugged in alone.
+  The left half then uses the right half's map, so its top-left corner becomes
+  `QK_CLEAR_EEPROM`.
 
 ## Layers
 
