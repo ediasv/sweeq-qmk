@@ -78,3 +78,9 @@ Notes:
 git -C ~/Code/qmk_firmware pull
 qmk git-submodule
 ```
+
+If upstream ever adds its own `keyboards/holykeebs/sweeq`, `git pull` stops
+because the symlink is in the way. Remove it with
+`rm ~/Code/qmk_firmware/keyboards/holykeebs/sweeq` (no trailing slash, so only the
+link is removed), pull again, and then either use upstream's board or move
+upstream's folder aside and re-run `./setup.sh` to keep this one.
