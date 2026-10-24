@@ -111,3 +111,23 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
 bool get_speculative_hold(uint16_t keycode, keyrecord_t *record) {
     return IS_QK_MOD_TAP(keycode);
 }
+
+// Esc: press W and E together.
+const uint16_t PROGMEM esc_combo[] = {KC_W, KC_E, COMBO_END};
+combo_t key_combos[] = {
+    COMBO(esc_combo, KC_ESC),
+};
+
+static uint16_t last_press_time;
+
+// Runs after combo processing, so W/E consumed by a combo never update it.
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        last_press_time = timer_read();
+    }
+    return true;
+}
+
+bool combo_should_trigger(uint16_t combo_index, combo_t *combo, uint16_t keycode, keyrecord_t *record) {
+    return timer_elapsed(last_press_time) >= COMBO_IDLE_MS;
+}

@@ -70,6 +70,8 @@ Notes:
 | NUM | left outer thumb (`Tab`) | numpad on the right hand, `0` and `,` on the right thumbs, plain mods on left home row |
 | SYS | right outer thumb (`Enter`) | F1–F12, screenshots (Cmd+Shift+3/4/5), media, brightness, `QK_BOOT` |
 
+Esc: press `W` + `E` together (doesn't fire while typing fast).
+
 ## Updating QMK
 
 ```sh
