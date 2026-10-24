@@ -64,3 +64,50 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                    XXXXXXX, XXXXXXX,      XXXXXXX, _______
     )
 };
+
+// Thumbs are exempt ('*') from the opposite-hands rule: holding Backspace with
+// a left-hand key (NAV/NUM mods) or Space with a right-hand key (SYM closers)
+// must still activate the layer.
+const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM = LAYOUT(
+    'L', 'L', 'L', 'L', 'L',      'R', 'R', 'R', 'R', 'R',
+    'L', 'L', 'L', 'L', 'L',      'R', 'R', 'R', 'R', 'R',
+    'L', 'L', 'L', 'L', 'L',      'R', 'R', 'R', 'R', 'R',
+                   '*', '*',      '*', '*'
+);
+
+static bool is_thumb_layer_key(uint16_t keycode) {
+    switch (keycode) {
+        case NUM_TAB:
+        case NAV_BSP:
+        case SYM_SPC:
+        case SYS_ENT:
+            return true;
+    }
+    return false;
+}
+
+// No Flow Tap on thumbs, so holding Space for SYM right after a letter or a
+// Space (typing `if (`) needs no pause. Home-row mods keep QMK's default.
+uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t *record, uint16_t prev_keycode) {
+    if (is_thumb_layer_key(keycode)) {
+        return 0;
+    }
+    return is_flow_tap_key(keycode) && is_flow_tap_key(prev_keycode) ? FLOW_TAP_TERM : 0;
+}
+
+// Tap-then-hold repeats only Backspace (and home-row letters, for Vim j/k);
+// on Tab, Space and Enter it opens the layer instead.
+uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case NUM_TAB:
+        case SYM_SPC:
+        case SYS_ENT:
+            return 0;
+    }
+    return QUICK_TAP_TERM;
+}
+
+// Speculate on every home-row mod, not just Shift/Ctrl, for Option/Cmd + click.
+bool get_speculative_hold(uint16_t keycode, keyrecord_t *record) {
+    return IS_QK_MOD_TAP(keycode);
+}
