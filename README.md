@@ -50,27 +50,25 @@ Flash both halves with the same `.uf2`:
 
 When you're done, connect TRRS first, then plug USB into the **right** half.
 
-Later updates: with TRRS connected and USB on the right, hold `SYM` (right outer
-thumb) and press `QK_BOOT` (left top-outer key). This reboots **only the right
-half** into the bootloader. Keymap-only changes just need the right half, because only
+Later updates: with TRRS connected and USB on the right, hold `Enter` (right
+outer thumb, the SYS layer) and press `QK_BOOT` (right top-outer key, the `P`
+position). This reboots **only the right half** into the bootloader. Keymap-only changes just need the right half, because only
 the half on USB runs the keymap. After changing the board definition or updating
 QMK, flash **both** halves with the steps above so they stay compatible.
 
 Notes:
 - Don't hold `Q` while plugging in with TRRS connected. That triggers bootmagic
   on the left half: it drops into the bootloader and looks dead until you replug.
-- Don't use the `SYM` layer's top-row corners with one half plugged in alone.
-  The left half then uses the right half's map, so its top-left corner becomes
-  `QK_CLEAR_EEPROM`.
 
 ## Layers
 
 | Layer | Hold | Contents |
 |---|---|---|
-| BASE | — | QWERTY; thumbs: `Tab`, `Space`/NAV, `Bksp`/NUM, `Enter`/SYM |
-| NAV | left inner thumb | arrows on `hjkl`, Home/PgDn/PgUp/End, Esc, Del, one-shot Gui/Alt/Ctrl/Shift on left home row, Caps Word |
-| NUM | right inner thumb | 1–0, F1–F12 |
-| SYM | right outer thumb | symbols, `QK_BOOT`, `QK_CLEAR_EEPROM` |
+| BASE | — | QWERTY; home-row mods Ctrl/Opt/Cmd/Shift on `A S D F`, mirrored on `J K L ;`; thumbs: `Tab`/NUM, `Bksp`/NAV, `Space`/SYM, `Enter`/SYS |
+| NAV | left inner thumb (`Bksp`) | arrows on `hjkl`, operators `= - + _ : ? ! & \|`, plain Ctrl/Opt/Cmd/Shift on left home row |
+| SYM | right inner thumb (`Space`) | brackets mirrored on the home row (openers left, closers right), `! @ # $ % ^ & *`, quotes, `` ` ~ \ \| `` |
+| NUM | left outer thumb (`Tab`) | numpad on the right hand, `0` and `,` on the right thumbs, plain mods on left home row |
+| SYS | right outer thumb (`Enter`) | F1–F12, screenshots (Cmd+Shift+3/4/5), media, brightness, `QK_BOOT` |
 
 ## Updating QMK
 
