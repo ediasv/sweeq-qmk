@@ -52,9 +52,15 @@ When you're done, connect TRRS first, then plug USB into the **right** half.
 
 Later updates: with TRRS connected and USB on the right, hold `Enter` (right
 outer thumb, the SYS layer) and press `QK_BOOT` (right top-outer key, the `P`
-position). This reboots **only the right half** into the bootloader. Keymap-only changes just need the right half, because only
-the half on USB runs the keymap. After changing the board definition or updating
-QMK, flash **both** halves with the steps above so they stay compatible.
+position). This reboots **only the right half** into the bootloader.
+Keymap-only changes just need the right half, because only the half on USB runs
+the keymap. After changing the board definition or updating QMK, flash **both**
+halves with the steps above so they stay compatible.
+
+First flash of this keymap over the old skeleton: the old firmware's
+`QK_BOOT` is elsewhere, so hold `Enter` and press the **left** top-outer key
+(the `Q` position), or double-tap reset. On the old firmware, `Enter` + `P`
+clears EEPROM and reboots instead of entering the bootloader.
 
 Notes:
 - Don't hold `Q` while plugging in with TRRS connected. That triggers bootmagic

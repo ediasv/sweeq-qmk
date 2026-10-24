@@ -112,22 +112,30 @@ bool get_speculative_hold(uint16_t keycode, keyrecord_t *record) {
     return IS_QK_MOD_TAP(keycode);
 }
 
+// Included here, after keymaps[], because qmk c2json (tests/test_layout.py)
+// loses track of the keymaps array if function bodies come before it.
+#include "esc_guard.h"
+
 // Esc: press W and E together.
 const uint16_t PROGMEM esc_combo[] = {KC_W, KC_E, COMBO_END};
 combo_t key_combos[] = {
     COMBO(esc_combo, KC_ESC),
 };
 
-static uint16_t last_press_time;
-
-// Runs after combo processing, so W/E consumed by a combo never update it.
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+// Runs on the raw press, just before combo processing and before tap-hold
+// keys settle, so a Space or home-row mod still held over W+E counts.
+bool pre_process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
-        last_press_time = timer_read();
+        esc_guard_press(record->event.time);
     }
     return true;
 }
 
+// Called before the combo records this key, so an empty state means W or E
+// is the chord's first key.
 bool combo_should_trigger(uint16_t combo_index, combo_t *combo, uint16_t keycode, keyrecord_t *record) {
-    return timer_elapsed(last_press_time) >= COMBO_IDLE_MS;
+    if (!record->event.pressed) {
+        return true;
+    }
+    return esc_guard_allows(record->event.time, combo->state == 0);
 }
